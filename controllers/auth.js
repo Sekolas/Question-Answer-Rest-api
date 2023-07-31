@@ -3,7 +3,7 @@ const CustomError = require("../helpers/database/error.js/CustomError");
 const asyncError = require("express-async-handler");
 
 const register = asyncError(async (req, res, next) => {
-  const name = "Leyla Kemer";
+  const name = "ARİF Kemer";
   const email = "Leyla@gmail.com";
   const password = "123456";
 
