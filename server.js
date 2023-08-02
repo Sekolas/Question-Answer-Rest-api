@@ -15,7 +15,7 @@ connectdb();
 
 const PORT=process.env.PORT;
 
-
+app.use(express.json());
 app.use("/api",routers);
 app.use(CustomErrorHandler);
 
