@@ -1,10 +1,10 @@
 const User = require("../models/user");
 const CustomError = require("../helpers/database/error.js/CustomError");
 const asyncError = require("express-async-handler");
+const sendJwt=require("../helpers/authorization/tokenHelpers");
+const {getAccesToRoute}=require("../middlewares/errors/authorization/auth");
 
 const register = asyncError(async (req, res, next) => {
-
-  
 
   const {name,email,password,role}=req.body;
 
@@ -15,6 +15,10 @@ const register = asyncError(async (req, res, next) => {
     role
   });
 
+  SendJwt(user,res);
+
+  const token=user.generateJwtFromUser();
+
   res.status(200).json({
     succes: true,
     data: user,
@@ -22,10 +26,14 @@ const register = asyncError(async (req, res, next) => {
 
 });
 
-const errorTest = (req, res, next) => {
-  return next(new CustomError("custom error hata oluştu", 400));
-};
+const tokentest=(req,res,next)=>{
+  res.json({
+    succes:true,
+  })
+}
+
+
 module.exports = {
   register,
-  errorTest,
+  tokentest,
 };

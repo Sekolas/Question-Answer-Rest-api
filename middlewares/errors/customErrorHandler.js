@@ -1,7 +1,9 @@
+const CustomError = require("../../helpers/database/error.js/CustomError");
+
+
 const CustomErrorHandler=(err,req,res,next)=>{
 
-    let CustomError =err;
-    console.log(CustomError.message,CustomError.status);
+    let customError =err;
 
     console.log("custom error handlerr");
     res
