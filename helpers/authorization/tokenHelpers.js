@@ -22,4 +22,10 @@ const SendJwt=(user,res)=>{
 
 };
 
-module.exports=SendJwt;
+const İsTokenİncluded=(req)=>{
+    
+};
+
+module.exports={
+    SendJwt
+};
