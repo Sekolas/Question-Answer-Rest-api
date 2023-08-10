@@ -9,7 +9,7 @@ const SendJwt=(user,res)=>{
     .cookie("acces_token",token,{
         httpOnly:true,
         expires:new Date(Date.now()+JWT_COOKIE*1000),
-        secure:false
+        secure:true
     })
     .json({
         succees:true,
@@ -22,10 +22,22 @@ const SendJwt=(user,res)=>{
 
 };
 
-const İsTokenİncluded=(req)=>{
-    
-};
+const istokenİncluded=(req)=>{
+    if(req.headers.authorization){
+        return true;
+    }
+    else{
+        return false;
+    }
+}
+const getAccesTokenFromHeader=(req)=>{
+    const authorization= req.headers.authorization;
+    const acces_token=authorization.split(" ")[1];
+    return acces_token;
+}
 
 module.exports={
-    SendJwt
+    SendJwt,
+    istokenİncluded,
+    getAccesTokenFromHeader
 };

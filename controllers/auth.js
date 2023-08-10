@@ -1,7 +1,7 @@
 const User = require("../models/user");
 const CustomError = require("../helpers/database/error.js/CustomError");
 const asyncError = require("express-async-handler");
-const sendJwt=require("../helpers/authorization/tokenHelpers");
+const sendJwtToClient=require("../helpers/authorization/tokenHelpers");
 const {getAccesToRoute}=require("../middlewares/errors/authorization/auth");
 
 const register = asyncError(async (req, res, next) => {
@@ -15,25 +15,21 @@ const register = asyncError(async (req, res, next) => {
     role
   });
 
-  SendJwt(user,res);
-
-  const token=user.generateJwtFromUser();
-
-  res.status(200).json({
-    succes: true,
-    data: user,
-  });
+  sendJwtToClient.SendJwt(user,res);
 
 });
 
 const tokentest=(req,res,next)=>{
-  res.json({
-    succes:true,
+  res
+  .json({
+    success:true
   })
 }
 
 
+
+
 module.exports = {
   register,
-  tokentest,
+  tokentest
 };

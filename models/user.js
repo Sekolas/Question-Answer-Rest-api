@@ -62,7 +62,7 @@ const userSchema=new Schema({
 
 userSchema.methods.generateJwtFromUser=function(){
     const JWT_SECRET_KEY="nothingelsematters";
-    const JWT_EXPİRE="10s";
+    const JWT_EXPİRE="20s";
     const payload={
         id:this._id,
         name:this.name

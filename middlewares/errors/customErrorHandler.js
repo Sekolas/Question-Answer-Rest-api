@@ -5,7 +5,7 @@ const CustomErrorHandler=(err,req,res,next)=>{
 
     let customError =err;
 
-    console.log("custom error handlerr");
+    
     res
     .status(CustomError.status || 500)
     .json({
