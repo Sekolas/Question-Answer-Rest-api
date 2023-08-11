@@ -6,21 +6,21 @@ const { istokenİncluded,getAccesTokenFromHeader} = require('../../../helpers/au
 
 
 const getAccesToRoute=(req,res,next)=>{
-
-    if(!istokenİncluded(req)){
+    const {JWT_SECRET_KEY}=process.env;
+    if(!req.headers.authorization && req.headers.authorization.startsWith("Bearer:")){
         return next(new CustomError("you are not auth to acces",401));
     }
 
-    const acces_token=getAccesToRoute(req);
-    const JWT_SECRET_KEY="nothingelsematters";
-    js.verify(acces_token,JWT_SECRET_KEY,(err,decoded)=>{
+    const accestoken=getAccesTokenFromHeader(req);
+
+    js.verify(accestoken,JWT_SECRET_KEY,(err,decoded)=>{
         if(err){
-            return next(new CustomError("you are not auth to acces",401));
+            return next(new CustomError('you are not auth to acces',401));
         }
         console.log(decoded);
         next();
-
     });
+
 
     
 
