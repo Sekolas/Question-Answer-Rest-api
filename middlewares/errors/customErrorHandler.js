@@ -10,7 +10,7 @@ const CustomErrorHandler=(err,req,res,next)=>{
     .status(CustomError.status || 500)
     .json({
         success:false,
-        message:CustomError.message ||"Internel server error"
+        message:CustomError.message
 
     })
 };

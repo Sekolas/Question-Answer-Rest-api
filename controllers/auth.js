@@ -19,7 +19,7 @@ const register = asyncError(async (req, res, next) => {
 
 });
 
-const tokentest=(req,res,next)=>{
+const getUser=(req,res,next)=>{
   res
   .json({
     success:true
@@ -31,5 +31,5 @@ const tokentest=(req,res,next)=>{
 
 module.exports = {
   register,
-  tokentest
+  getUser
 };

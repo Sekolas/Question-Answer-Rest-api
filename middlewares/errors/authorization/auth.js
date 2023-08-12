@@ -17,7 +17,10 @@ const getAccesToRoute=(req,res,next)=>{
         if(err){
             return next(new CustomError('you are not auth to acces',401));
         }
-        console.log(decoded);
+        req.user={
+            id:decoded.id,
+            name:decoded.name
+        }
         next();
     });
 
