@@ -8,6 +8,8 @@ const router=express.Router();
 router.post("/register",register);
 
 router.get("/profile",getAccesToRoute,getUser);
+router.get("/login",getAccesToRoute,Login);
+
 
 
 

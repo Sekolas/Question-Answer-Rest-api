@@ -7,7 +7,7 @@ const { istokenİncluded,getAccesTokenFromHeader} = require('../../../helpers/au
 
 const getAccesToRoute=(req,res,next)=>{
     const {JWT_SECRET_KEY}=process.env;
-    if(!req.headers.authorization && req.headers.authorization.startsWith("Bearer:")){
+    if(!istokenİncluded){
         return next(new CustomError("you are not auth to acces",401));
     }
 

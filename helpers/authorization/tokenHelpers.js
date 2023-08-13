@@ -1,7 +1,7 @@
 
 const jwt=require("jsonwebtoken");
 
-const SendJwt=(user,res)=>{
+const sendJwtToClient=(user,res)=>{
     const token=user.generateJwtFromUser();
     const {JWT_COOKIE,NODE_ENV}=process.env;
     return res
@@ -23,7 +23,7 @@ const SendJwt=(user,res)=>{
 };
 
 const istokenİncluded=(req)=>{
-    return req.headers.authorization && req.headers.authorization.startsWith("Bearer:");
+    return (req.headers.authorization && req.headers.authorization.startsWith("Bearer:"));
 }
 const getAccesTokenFromHeader=(req)=>{
     const authorization= req.headers.authorization;
@@ -32,7 +32,7 @@ const getAccesTokenFromHeader=(req)=>{
 }
 
 module.exports={
-    SendJwt,
+    sendJwtToClient,
     istokenİncluded,
     getAccesTokenFromHeader
 };
