@@ -8,7 +8,6 @@ const validateUserİnput=(email,password)=>{
 const comparePassword=(password,hashpassword)=>{
     return bcrypt.compareSync(password,hashpassword);
 
-
 }
 
 module.exports={

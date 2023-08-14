@@ -21,13 +21,13 @@ const register = asyncError(async (req, res, next) => {
   sendJwtToClient(user, res);
 });
 
-const getUser = (req, res, next) => {
+const getUser =  (req, res, next) => {
   res.json({
     success: true,
     data: {
       id: req.user.id,
       name: req.user.name,
-    },
+    }
   });
 };
 
@@ -47,8 +47,36 @@ const Login = asyncError(async (req, res, next) => {
   sendJwtToClient(user, res);
 });
 
+const logout = asyncError(async (req, res, next) => {
+  const {NODE_ENV}=process.env;
+  return res
+    .status(200)
+    .cookie("acces_token",token,{
+        httpOnly:true,
+        expires:new Date(Date.now()),
+        secure:NODE_ENV=="development" ? false : true
+    })
+    .json({
+      success:true,
+      message:"logout succesful"
+    })
+
+});
+
+const imageUpload = asyncError(async (req, res, next) => {
+  res.status(200)
+  .json({
+    success:true,
+    message:"img upload succesful"
+  })
+
+
+});
+
 module.exports = {
   register,
   getUser,
   Login,
+  logout,
+  imageUpload
 };

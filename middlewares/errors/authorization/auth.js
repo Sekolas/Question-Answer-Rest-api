@@ -2,15 +2,12 @@ const CustomError = require('../../../helpers/database/error.js/CustomError');
 const js = require('jsonwebtoken');
 const { istokenİncluded,getAccesTokenFromHeader} = require('../../../helpers/authorization/tokenHelpers');
 
-
-
-
 const getAccesToRoute=(req,res,next)=>{
     const {JWT_SECRET_KEY}=process.env;
-    if(!istokenİncluded){
-        return next(new CustomError("you are not auth to acces",401));
+    if(!istokenİncluded(req)){
+        return next(new CustomError('you are not auth to acces',401));
+        
     }
-
     const accestoken=getAccesTokenFromHeader(req);
 
     js.verify(accestoken,JWT_SECRET_KEY,(err,decoded)=>{
@@ -23,11 +20,7 @@ const getAccesToRoute=(req,res,next)=>{
         }
         next();
     });
-
-
-    
-
-}
+};
 
 module.exports={
     getAccesToRoute

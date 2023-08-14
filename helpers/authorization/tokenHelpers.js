@@ -23,7 +23,8 @@ const sendJwtToClient=(user,res)=>{
 };
 
 const istokenİncluded=(req)=>{
-    return (req.headers.authorization && req.headers.authorization.startsWith("Bearer:"));
+    return (req.headers.authorization && req.headers.authorization.startsWith("Bearer:")
+    );
 }
 const getAccesTokenFromHeader=(req)=>{
     const authorization= req.headers.authorization;
