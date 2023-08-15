@@ -2,6 +2,8 @@ const mongoose=require("mongoose");
 const bcrypt = require('bcrypt');
 const jwt=require("jsonwebtoken");
 const { string } = require("simple-is");
+const crypto=require("crypto");
+
 
 const Schema=mongoose.Schema;
 
@@ -55,10 +57,29 @@ const userSchema=new Schema({
     blocked:{
         type:Boolean,
         default:false
+    },
+    resetPassword:{
+        type:String,
+    },
+    resetpasswordExpıre:{
+        typ:Date
+
     }
     
-    
 });
+
+userSchema.methods.getresetPasswordTokenUser=()=>{
+    const {RESET_PASSWORD_EXPIRE}=process.env;
+    const ramdomHexString=crypto.randomBytes(15).toString("hex");
+    const resettoken=crypto.createHash("SHA256").update(ramdomHexString).digest("hex");
+    console.log(resettoken);
+    this.resetPassword=resettoken;
+    this.resetpasswordExpıre=Date.now()+parseInt( RESET_PASSWORD_EXPIRE);
+    return resettoken;
+
+};
+
+
 
 userSchema.methods.generateJwtFromUser=function(){
     const {JWT_SECRET_KEY,JWT_EXPIRE}=process.env;

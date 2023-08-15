@@ -21,14 +21,15 @@ const register = asyncError(async (req, res, next) => {
   sendJwtToClient(user, res);
 });
 
-const getUser =  (req, res, next) => {
-  res.json({
+const getUser = (req, res, next) => {
+  res.status(200)
+  .json({
     success: true,
     data: {
       id: req.user.id,
       name: req.user.name,
     }
-  });
+  })
 };
 
 const Login = asyncError(async (req, res, next) => {
@@ -48,29 +49,49 @@ const Login = asyncError(async (req, res, next) => {
 });
 
 const logout = asyncError(async (req, res, next) => {
-  const {NODE_ENV}=process.env;
+  const { NODE_ENV } = process.env;
   return res
     .status(200)
-    .cookie("acces_token",token,{
-        httpOnly:true,
-        expires:new Date(Date.now()),
-        secure:NODE_ENV=="development" ? false : true
+    .cookie("acces_token", token, {
+      httpOnly: true,
+      expires: new Date(Date.now()),
+      secure: NODE_ENV == "development" ? false : true,
     })
     .json({
-      success:true,
-      message:"logout succesful"
-    })
-
+      success: true,
+      message: "logout succesful",
+    });
 });
 
 const imageUpload = asyncError(async (req, res, next) => {
-  res.status(200)
-  .json({
-    success:true,
-    message:"img upload succesful"
+  await User.findByIdAndUpdate(
+    req.user.id,
+    {
+      profile_image: req.savedProfileImage,
+    },
+    {
+      new: true,
+      runValidators: true,
+    }
+  );
+  res.status(200).json({
+    success: true,
+    message: "img upload succesful",
+    data: user,
+  });
+});
+
+const forgotpassword = asyncError(async (req, res, next) => {
+  const resetmail=req.body.email;
+  const user=await User.findOne({email:resetmail});
+  if(!user){
+    return next(new CustomError("there is no user with that email",400));
+  }
+  const resetPasswordtoken=user.resetPasswordtoken();
+  res.status(200).json({
+    message:"token send to your email"
+
   })
-
-
 });
 
 module.exports = {
@@ -78,5 +99,6 @@ module.exports = {
   getUser,
   Login,
   logout,
-  imageUpload
+  imageUpload,
+  forgotpassword
 };
