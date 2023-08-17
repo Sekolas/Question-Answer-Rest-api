@@ -3,6 +3,7 @@ const CustomError = require("../helpers/database/error.js/CustomError");
 const asyncError = require("express-async-handler");
 const { sendJwtToClient } = require("../helpers/authorization/tokenHelpers");
 const { getAccesToRoute } = require("../middlewares/errors/authorization/auth");
+const { sendEmail } = require('../helpers/libraries/sendEmail');
 const {
   validateUserİnput,
   comparePassword,
@@ -87,12 +88,63 @@ const forgotpassword = asyncError(async (req, res, next) => {
   if(!user){
     return next(new CustomError("there is no user with that email",400));
   }
-  const resetPasswordtoken=user.resetPasswordtoken();
-  res.status(200).json({
-    message:"token send to your email"
 
-  })
+  const resetPasswordtoken=user.getresetPasswordTokenUser();
+  await user.save();
+
+  const resetpasswordUrl=`http://localhost:5000/api/auth/resetpassword?resetpasswordtoken=${resetPasswordtoken}`;
+  const emailtemplate=`
+  <h3>reset your password</h3>
+    <p>this <a href="${resetPasswordtoken}" target="_blank">link</a>will expire one hour</p>
+  `;
+
+  try {
+    await sendEmail({
+      from:process.env.SMTP_USER,
+      to:resetmail,
+      subject:"reset password",
+      html:emailtemplate,
+    });
+    res.status(200).json({
+      success:true,
+      message:"token send to your email"
+    });
+    
+  } catch (error) {
+    user.resetPasswordtoken=undefined;
+    user.resetpasswordExpıre=undefined;
+    await user.save();
+    return next(new CustomError("email couldnt sent",500));
+  }
 });
+
+const resetpassword=asyncError(async (req, res, next) => {
+  const{resetPasswordtoken}=req.query;
+  const {password}=req.body;
+  if(!resetPasswordtoken){
+    return next(new CustomError("Please provide a valid token",400));
+  }
+  let user=await user.findOne({
+    resetPasswordtoken:resetPasswordtoken,
+    resetpasswordExpıre : {$gt:Date.now()}
+  });
+ 
+  user.password=password;
+  user.resetPasswordtoken=undefined;
+  user.resetpasswordExpıre=undefined;
+
+  await user.save();
+
+  return res.status(200)
+  .json({
+    success:true,
+    message:"password succesfully changed"
+  })
+
+});
+
+
+
 
 module.exports = {
   register,
@@ -100,5 +152,6 @@ module.exports = {
   Login,
   logout,
   imageUpload,
+  resetpassword,
   forgotpassword
 };
