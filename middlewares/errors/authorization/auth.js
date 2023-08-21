@@ -11,6 +11,9 @@ const getAccesToRoute=(req,res,next)=>{
     const accestoken=getAccesTokenFromHeader(req);
 
     js.verify(accestoken,JWT_SECRET_KEY,(err,decoded)=>{
+        if(err){
+            return next(new CustomError('you are not auth to acces',401));
+        }
         req.user={
             id:decoded.id,
             name:decoded.name
