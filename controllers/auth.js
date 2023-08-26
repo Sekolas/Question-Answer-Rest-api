@@ -68,7 +68,7 @@ const imageUpload = asyncError(async (req, res, next) => {
   await User.findByIdAndUpdate(
     req.user.id,
     {
-      profile_image: req.savedProfileImage,
+      "profile_image": req.savedProfileImage,
     },
     {
       new: true,

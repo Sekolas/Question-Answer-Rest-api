@@ -7,8 +7,8 @@ const storage=multer.diskStorage({
         const rootDir=path.dirname(require.main.filename);
         cb(null,path.join(rootDir,"/public/uploads"));
     },
-    filename:function(req,file,cb){
-        const extension=file.mimetype.split("/")[1];
+    filename:function(req,_file,cb){
+        const extension=_file.mimetype.split("/")[1];
         req.savedProfileImage="image_"+req.user.id+"."+extension;
         cb(null,req.savedProfileImage);
     }
