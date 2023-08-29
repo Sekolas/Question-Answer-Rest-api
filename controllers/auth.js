@@ -89,7 +89,7 @@ const forgotpassword = asyncError(async (req, res, next) => {
     return next(new CustomError("there is no user with that email",400));
   }
 
-  const resetPasswordtoken=user.getresetPasswordTokenUser();
+  const resetPasswordtoken=user.getResetPasswordFromUser();
   await user.save();
 
   const resetpasswordUrl=`http://localhost:5000/api/auth/resetpassword?resetpasswordtoken=${resetPasswordtoken}`;
@@ -128,6 +128,12 @@ const resetpassword=asyncError(async (req, res, next) => {
     resetPasswordtoken:resetPasswordtoken,
     resetpasswordExpıre : {$gt:Date.now()}
   });
+
+  if(!user){
+    return next(new CustomError("Please provide a valid token",400));
+
+  }
+
  
   user.password=password;
   user.resetPasswordtoken=undefined;
@@ -142,9 +148,6 @@ const resetpassword=asyncError(async (req, res, next) => {
   })
 
 });
-
-
-
 
 module.exports = {
   register,
