@@ -124,7 +124,7 @@ const resetpassword=asyncError(async (req, res, next) => {
   if(!resetPasswordtoken){
     return next(new CustomError("Please provide a valid token",400));
   }
-  let user=await user.findOne({
+  let user=await User.findOne({
     resetPasswordtoken:resetPasswordtoken,
     resetpasswordExpıre : {$gt:Date.now()}
   });
