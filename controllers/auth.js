@@ -149,6 +149,21 @@ const resetpassword=asyncError(async (req, res, next) => {
 
 });
 
+const editDeatils=asyncError(async(req,res,next)=>{
+  const editinformaiton=req.body;
+  const user=await User.findByIdAndUpdate(req.user.id,editinformaiton,{
+    const :true,
+    runValidators:true
+  });
+  return res.status(200)
+  .json({
+    success:true,
+    message:"succesfully changed",
+    data:user
+  })
+
+})
+
 module.exports = {
   register,
   getUser,
@@ -156,5 +171,6 @@ module.exports = {
   logout,
   imageUpload,
   resetpassword,
-  forgotpassword
+  forgotpassword,
+  editDeatils
 };
