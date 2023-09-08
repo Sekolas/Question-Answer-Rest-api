@@ -10,8 +10,8 @@ const { checkQuestionExist } = require("../middlewares/database/databaseErrorHel
 router.post("/ask",getAccesToRoute,askNewQuesiton);
 router.get("/",getAllQuestions);
 router.get("/:id",checkQuestionExist,getSingleQuesiton);
-router.put("/:id/edit",[getAccesToRoute,checkQuestionExist,getQzuestionOwnerAccess],editQeustion);
-router.delete("/:id/delete",[getAccesToRoute,checkQuestionExist,getQzuestionOwnerAccess],deleteQuestion);
+router.put("/:id/edit",[getAccesToRoute,checkQuestionExist,getQuestionOwnerAccess],editQeustion);
+router.delete("/:id/delete",[getAccesToRoute,checkQuestionExist,getQuestionOwnerAccess],deleteQuestion);
 router.get("/:id/like",[getAccesToRoute,checkQuestionExist],likeQuestion);
 router.get("/:id/undolike",[getAccesToRoute,checkQuestionExist],undolikeQuestion);
 
