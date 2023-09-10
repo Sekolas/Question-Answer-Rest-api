@@ -28,7 +28,10 @@ const deleteuser=asyncError(async(req,res,next)=>{
         success:true,
         message:"deleted"
     })
-})
+});
+
+
+
 
 
 module.exports={

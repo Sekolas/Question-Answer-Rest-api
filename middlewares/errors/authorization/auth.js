@@ -3,6 +3,8 @@ const js = require('jsonwebtoken');
 const User = require("../models/user");
 const { istokenİncluded,getAccesTokenFromHeader} = require('../../../helpers/authorization/tokenHelpers');
 const expressAsyncHandler = require('express-async-handler');
+const Question = require('../../../models/question');
+
 
 
 const getAccesToRoute=(req,res,next)=>{
@@ -36,7 +38,23 @@ const getAdminAccess=expressAsyncHandler(async(req,res,next)=>{
 
 });
 
+const getQuestionOwnerAccess=expressAsyncHandler(async(req,res,next)=>{
+    const userId=req.user.id;
+    const questionId=req.params.id;
+    
+    const question=await Question.findById(questionId);
+    if(question.user!==userId){
+        return next(new CustomError("only owner can handle this operation",403));
+
+    }
+    next();
+
+});
+
+
+
 module.exports={
     getAccesToRoute,
-    getAdminAccess
+    getAdminAccess,
+    getQuestionOwnerAccess
 };
