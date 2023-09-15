@@ -4,6 +4,8 @@ const User = require("../models/user");
 const { istokenİncluded,getAccesTokenFromHeader} = require('../../../helpers/authorization/tokenHelpers');
 const expressAsyncHandler = require('express-async-handler');
 const Question = require('../../../models/question');
+const Answer = require('../routers/answer');
+
 
 
 
@@ -51,10 +53,24 @@ const getQuestionOwnerAccess=expressAsyncHandler(async(req,res,next)=>{
 
 });
 
+const getAnswerOwnerAccess=expressAsyncHandler(async(req,res,next)=>{
+    const userId=req.user.id;
+    const answerid=req.params.answerid;
+    
+    const answer=await Answer.findById(answerid);
+    if(answer.user!==userId){
+        return next(new CustomError("only owner can handle this operation",403));
+
+    }
+    next();
+
+});
+
 
 
 module.exports={
     getAccesToRoute,
     getAdminAccess,
-    getQuestionOwnerAccess
+    getQuestionOwnerAccess,
+    getAnswerOwnerAccess
 };
