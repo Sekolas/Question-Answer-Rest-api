@@ -1,5 +1,7 @@
 const mongoose=require("mongoose");
 const { string } = require("simple-is");
+const { findById } = require("./question");
+const question = require("./question");
 
 const Schema=mongoose.Schema;
 
@@ -31,6 +33,22 @@ const answerSchema=new Schema({
         ref:"question",
         required:true,
     }
+
+})
+
+answerSchema.pre("save",async function(next){
+    if(!this.isModified("user")){
+        return next();
+    }
+    try {
+        const quesiton=await question.findById(this.question);
+        quesiton.answers.push(this._id);
+        await quesiton.save();
+    } catch (error) {
+        return next(error);
+        
+    }
+
 
 })
 

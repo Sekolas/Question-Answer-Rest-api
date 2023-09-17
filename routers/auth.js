@@ -9,10 +9,9 @@ const {profileimageupload} = require('../middlewares/libraries/profileimageuploa
 const router=express.Router();
 
 router.post("/register",register);
-
 router.get("/profile",getAccesToRoute,getUser);
 router.post("/login",Login);
-router.get("/logout",logout);
+router.get("/logout",getAccesToRoute,logout);
 router.post("/upload",[getAccesToRoute,profileimageupload.single("profile_image")],imageUpload);
 router.post("/forgotpassword",forgotpassword);
 router.put("/resetpassword",resetpassword);
