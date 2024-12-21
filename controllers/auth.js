@@ -84,7 +84,7 @@ const imageUpload = asyncError(async (req, res, next) => {
 
 const forgotpassword = asyncError(async (req, res, next) => {
   const resetmail=req.body.email;
-  const user=await User.findOne({email:resetmail});
+  const user=await User.findOne({email:resetmail}); 
   if(!user){
     return next(new CustomError("there is no user with that email",400));
   }
